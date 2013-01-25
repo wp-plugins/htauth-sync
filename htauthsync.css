@@ -1,0 +1,9 @@
+.htauth-sync-options tr > td { vertical-align: top; padding-top: 15px; }
+.htauth-sync-options input { display: block; }
+.htauth-sync-options select[multiple] { height: 100px; !important }
+
+.htauth-sync-warning {
+	background-color: #FFFFE0;
+	border: 2px solid #E6DB55;
+	padding: 3px;
+}
