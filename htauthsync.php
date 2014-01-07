@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: HTAuth Sync
-Plugin URI: http://wordpress.com/extend/plugins/htauth-sync
-Description: Exports Wordpress credentials for use by Apache
-Plugin Author: John Luetke
-Version: 1.0.0
+Plugin URI: http://wordpress.org/extend/plugins/htauth-sync
+Description: Exports Wordpress credentials for use by Apache Digest Authentication
+Author: John Luetke
+Version: 1.1
 Author URI: http://johnluetke.net
 */
 
@@ -345,7 +345,7 @@ if (!class_exists('HTAuthSync')) {
 		 * Registers the options page fr the plugin
 		 */
 		public function registerOptionsPage() {
-			add_options_page('HTDigest Sync', 'HTDigest Sync', 'manage_options', __FILE__, array($this, 'optionsPage'));
+			add_options_page('HTAuth Sync', 'HTAuth Sync', 'manage_options', __FILE__, array($this, 'optionsPage'));
 		}
 		
 		/**
@@ -380,32 +380,40 @@ if (!class_exists('HTAuthSync')) {
 		?>
 				<div class='wrap'>
 				<div id="icon-options-general" class="icon32"></div>
-				<h2>HTDigest Sync Settings</h2>
-				<form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>?page=htauthsync/htauthsync.php'>
-				<table class="htauth-sync-options">
+				<h2>HTAuth Sync Settings</h2>
+				<form method='post' action='<?php echo $_SERVER['PHP_SELF']; ?>?page=htauth-sync/htauthsync.php'>
+				<table class="htauth-sync-options form-table">
 					<tr>
-						<td><strong>Auth File location</td>
-						<td><input type="text" name="htauth_file" value="<?php echo $this->options['htauth_file'];?>"/>Absolute path to The file where your blog's users will be synced to. This value must also be entered as <a href="http://httpd.apache.org/docs/2.0/mod/mod_auth.html#authuserfile">AuthUserFile</a> in your Apache configuration. <strong>You should not put this file in a location where it can be accessed via a request to your webserver</strong>.<div class="htauth-sync-warning"><strong>Warning!</strong> You should not change this value once the plugin has been active for some time. If you do, your users will need to re-login to Wordpress before their account will be synced.</div></td>
+						<th scope="row"><label for="htauth_file">Auth File location</label></th>
+						<td>
+							<input type="text" name="htauth_file" value="<?php echo $this->options['htauth_file'];?>" class="regular-text" />
+							<p class="description">Absolute path to the file where your blog's users will be synced to. This value must also be entered as <a href="http://httpd.apache.org/docs/2.0/mod/mod_auth.html#authuserfile">AuthUserFile</a> in your Apache configuration. <strong>You should not put this file in a location where it can be accessed via a request to your webserver</strong>.</p>
+							<div class="htauth-sync-warning"><strong>Warning!</strong> You should not change this value once the plugin has been active for some time. If you do, your users will need to re-login to Wordpress before their account will be synced.</div></td>
 					</tr>
 					<tr>
-						<td><strong>Realm Name</td>
-						<td><input type="text" name="htauth_realm" value="<?php echo $this->options['htauth_realm'];?>"/>The "realm" that users will authenticate into. This value must also be entered as <a href="http://httpd.apache.org/docs/2.0/mod/core.html#authname">AuthName</a> in your Apache configuration. </td>
+						<th scope="row"><label for="htauth_realm">Realm Name</label></th>
+						<td>
+							<input type="text" name="htauth_realm" value="<?php echo $this->options['htauth_realm'];?>" class="regular-text" />
+							<p class="description">The "realm" that users will authenticate into. This value must also be entered as <a href="http://httpd.apache.org/docs/2.0/mod/core.html#authname">AuthName</a> in your Apache configuration.</p>
+						</td>
 					</tr>
 					<tr>
 		<?php
 						$roles = get_editable_roles();
+						//sort($roles);
 		?>
-						<td><strong>Roles to Sync</td>
+						<th scope="row"><label for="htauth_roles[]">Roles to Sync</label></th>
 						<td>
-							<select name="htauth_roles[]" multiple="true">
 		<?php
 							foreach ($roles as $role => $attrib) {
 		?>
-								<option value="<?php echo $role;?>"<?php echo (in_array($role, $this->options['htauth_roles']) ? " selected=\"true\"" : "");?>><?php echo $attrib['name'];?></option>
+								<label>
+									<input type="checkbox" name="htauth_roles[]" value="<?php echo $role;?>"<?php echo (in_array($role, $this->options['htauth_roles']) ? " checked=\"true\"" : "");?>/>
+									<?php echo $attrib['name'];?>
+								</label>
 		<?php
 							}
 		?>
-							</select>
 						</td>
 					</tr>
 					<tr>
