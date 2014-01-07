@@ -4,7 +4,7 @@ Donate link: http://johnluetke.net/donate
 Tags: apache, htaccess, htauth, htusers, htdigest, authentication
 Requires at least: 3.5
 Tested up to: 3.8
-Stable tag: 1.0.0
+Stable tag: 1.1
 License: Apache License 2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0.html
 
